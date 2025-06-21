@@ -1,0 +1,396 @@
+<head>
+  <meta charset="UTF-8" />
+  <title>SPPD</title>
+  <style>
+    body {
+      font-family: "Times New Roman", Times, serif;
+      margin: 5px;
+      color: #000;
+    }
+    .page {
+      width: 660px;
+      margin: 0 auto 10px auto;
+      padding: 5px;
+      border: 0px solid #000;
+      box-sizing: border-box;
+    }
+    h1, h2, h3 {
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+    h2 {
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 15px;
+      text-decoration: underline;
+    }
+    .header-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Logo kiri dan kanan di ujung */
+    padding: 10px 20px;
+    border-bottom: 1px solid #000; /* Contoh garis bawah */
+    }
+
+    .header-info .logo-left,
+    .header-info .logo-right {
+        width: 100%; /* Atur ukuran logo sesuai kebutuhan */
+        height: auto;
+    }
+
+    .header-info .header-center {
+    flex-grow: 1;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    /* Bisa ditambah style lain sesuai kebutuhan */
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+    table, th, td {
+      border: 1px solid #000;
+    }
+    th, td {
+      padding: 6px 8px;
+      vertical-align: top;
+    }
+    th {
+      text-align: center;
+      font-weight: bold;
+    }
+    .no-border {
+      border: none !important;
+    }
+    .signature-section {
+      margin-top: 30px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .signature-name {
+      font-weight: bold;
+      margin-top: 60px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .nip {
+      text-align: center;
+      font-size: 13px;
+      margin-top: 2px;
+    }
+    .page-break {
+      page-break-after: always;
+    }
+    .section-title {
+      font-weight: bold;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+    .italic {
+      font-style: italic;
+    }
+    .dashed-line {
+      border-bottom: 1px dotted #000;
+      width: 200px;
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HALAMAN 1 -->
+
+<div class="page" id="page1">
+
+<div>
+    <table style="width: 100%; text-align: center; border-collapse: collapse; border: none; border-bottom: 2px solid #000;">
+    <tr>
+        <td style="width: 20%; border: none;">
+            <img src="images/logobulungan.png" alt="Logo Kabupaten Bulungan" style="max-height: 70px; display: block; margin: 0 auto;">
+        </td>
+        <td style="width: 80%; text-align: center; border: none;">
+            <div style="font-weight: bold; font-size: 16px;">PEMERINTAH KABUPATEN BULUNGAN</div>
+            <div style="font-weight: bold; font-size: 18px;">{{ $setting -> nama_kantor }}</div>
+            <div style="font-weight: font-size: 12px;">{{ $setting -> alamat }}</div>
+            <div style="font-size: 12px; font-style: italic;">Pos-El: {{ $setting -> email }} Laman : {{ $setting -> website }} </div>
+        </td>
+        </tr>
+    </table>
+</div>
+<table style="border: none; ">
+      <tbody style="border: none;">
+        <tr style="border: none; ">
+          <td style="width: 20%; border: none;"></td>
+          <td style="width: 40%; border: none;"></td>
+          <td style="width: 40%; border: none;">Lembar ke &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+            <br>Kode Nomor &nbsp;:
+            <br>Nomor &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <strong>{{ $sppd->no_surat}}</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 style="text-align: center; font-weight: bold; margin-bottom: 5px; margin-top: 30px;">SURAT PERJALANAN DINAS (SPD)</h2>
+    <br>
+    <table>
+      <tbody>
+        <tr>
+          <td style="text-align:center;">1</td>
+          <td>Pejabat yang memberi perintah</td>
+          <td>:</td>
+          <td>Kepala Dinas Komunikasi, Informatika dan Persandian Kabupaten Bulungan</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">2</td>
+          <td>Pegawai yang diperintahkan</td>
+          <td>:</td>
+          <td>{{ $sppd -> pegawai_id -> nama }}</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">3</td>
+          <td>NIP/NIPPK</td>
+          <td>:</td>
+          <td>{{ $sppd -> pegawai_id -> nip }}</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">4</td>
+          <td>Pangkat / Golongan</td>
+          <td>:</td>
+          <td>{{ $sppd -> pegawai_id -> jabatan_golongan }}</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">5</td>
+          <td>Jabatan</td>
+          <td>:</td>
+          <td>{{ $sppd -> pegawai_id -> jabatan }}</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">6</td>
+          <td>Maksud Perjalanan Dinas</td>
+          <td>:</td>
+          <td>{{ $sppd -> maksud }}</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">7</td>
+          <td>Angkutan yang dipergunakan</td>
+          <td>:</td>
+          <td>{{ $sppd -> transportasi }}</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">8</td>
+          <td>Tempat berangkat</td>
+          <td>:</td>
+          <td>Tanjung Selor</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">9</td>
+          <td>Tempat tujuan</td>
+          <td>:</td>
+          <td>{{ $sppd -> tujuan }}</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">10</td>
+          <td>Lama Perjalanan Dinas</td>
+          <td>:</td>
+          <td> {{ $sppd -> lama_hari }} Hari
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">11</td>
+          <td>Tanggal berangkat</td>
+          <td>:</td>
+          <td>{{ $sppd -> tgl_berangkat }}</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">12</td>
+          <td>Tanggal harus kembali</td>
+          <td>:</td>
+          <td>{{ $sppd -> tgl_pulang }}</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">13</td>
+          <td>Pengikut</td>
+          <td>:</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td style="width: 5%;">14</td>
+          <td style="width: 29%;">Pembebanan Anggaran</td><td>:</td>
+          <td style="width: 65%; border-top:none;" >Tahun 2025</td>
+        </tr>
+        <tr>
+          <td style="width: 5%; border-top:none;">15</td>
+          <td style="width: 29%; border-top:none;">a. Mata Anggaran</td><td>:</td>
+          <td style="width: 65%; border-top:none;">{{ $setting -> nama_kantor }}</td>
+        </tr>
+        <tr>
+          <td style="width: 5%; border-top:none; border-bottom:none;">&nbsp;</td>
+          <td style="width: 29%; border-top:none; border-bottom:none;">b. Kode Rekening</td><td>:</td>
+          <td style="width: 65%; border-top:none; border-bottom:none;" >{{ $rekening_id -> kode_rekening }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section-title">URAIAN:</div>
+    <ol style="margin-top: 0; margin-left: 20px; font-size: 14px;">
+      <li>Supaya melapor di tempat tujuan.</li>
+      <li>Membuat laporan tertulis tentang hasil pelaksanaan tugas.</li>
+    </ol>
+    <br>
+    <table style="border: none;">
+      <tbody style="border: none;">
+        <tr style="border: none;">
+          <td style="width: 20%; border: none;"></td>
+          <td style="width: 40%; border: none;"></td>
+          <td style="width: 40%; border: none;;" >Dikeluarkan di : Tanjung Selor <br>Pada Tanggal : {{ $sppd -> tgl_input }}</td>
+        </tr>
+        <tr style="border: none;">
+          <td style="width: 20%; border: none;"></td>
+          <td style="width: 40%; border: none;"></td>
+          <td style="width: 40%; border: none;;" >Kepala Dinas, <br><br><br><br><br><b>Hj. ANDRIANA, SH., M.AP</b><br>Pembina Utama Muda IV/c
+<br>NIP. 19730329 199803 2 006</td>
+        </tr>
+      </tbody>
+    </table> <br> <br> <br>
+
+  <!-- HALAMAN 2 -->
+    <div class="page" id="page2">
+
+<table style="border-collapse: collapse; width: 100%; border: 1px solid black;">
+    <tbody>
+        <tr>
+            <td rowspan="2" style="border: 1px solid black; border-right: none; vertical-align: top; padding: 4px 8px;">I.</td>
+            <td rowspan="2" colspan="2" style="border: 1px solid black; border-right: none; vertical-align: top; padding: 4px 8px;">
+            </td>
+            <td style="border: 1px solid black; border-right: none; vertical-align: top; padding: 4px 8px;">
+                Berangkat dari <br> Ke <br> Pada tanggal <br>
+            </td>
+            <td style="border: 1px solid black; border-left: none; vertical-align: top; padding: 4px 8px;">
+                : Tanjung Selor <br><br> : {{ $sppd -> tujuan }} <br> : {{ $sppd -> tgl_berangkat }}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="border: 1px solid black; text-align: center; vertical-align: top; padding-top: 5px; padding-bottom: 8px;">
+                Kepala Dinas, <br><br><br><br>
+                <strong>Hj. ANDRIANA, SH., M.AP</strong> <br>Pembina Utama Muda IV/c
+<br>
+                NIP.  19730329 199803 2 006
+            </td>
+        </tr>
+        <tr>
+            <td>II.</td>
+            <td style="border: 1px solid black; border-right: none; vertical-align: top; padding: 4px 8px;">
+                Tiba di <br> Pada tanggal<br>  <br>
+            </td>
+            <td style="border: 1px solid black; border-left: none; vertical-align: top; padding: 4px 8px;">
+                : {{ $sppd -> tujuan }} <br> : {{ $sppd->tgl_berangkat }} <br>  <br>
+            </td>
+            <td style="border: 1px solid black; border-right: none; vertical-align: top; padding: 4px 8px;">
+                Berangkat dari <br> Pada tanggal <br>Ke  <br>
+            </td>
+            <td style="border: 1px solid black; border-left: none; vertical-align: top; padding: 4px 8px;">
+                : {{ $sppd -> tujuan }} <br> : {{ $sppd->tgl_pulang }} <br> :  <br>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="2" style="border: 1px solid black; text-align: center; vertical-align: top; padding-top: 5px; padding-bottom: 8px;">
+                Kepala           <br><br><br><br><br><br>
+                ______________________________<br>
+                ______________________________</td>
+
+            <td colspan="2" style="border: 1px solid black; text-align: center; vertical-align: top; padding-top: 5px; padding-bottom: 8px;">
+                Kepala  <br><br><br><br><br><br>
+                ______________________________<br>
+                ______________________________</td>
+        </tr>
+        <tr>
+            <td>III.</td>
+            <td style="border: 1px solid black; border-right: none; vertical-align: top; padding: 4px 8px;">
+                Tiba di <br> Pada tanggal<br>  <br>
+            </td>
+            <td style="border: 1px solid black; border-left: none; vertical-align: top; padding: 4px 8px;">
+                :  <br> :  <br>  <br>
+            </td>
+            <td style="border: 1px solid black; border-right: none; vertical-align: top; padding: 4px 8px;">
+                Berangkat dari <br> Pada tanggal <br>Ke  <br>
+            </td>
+            <td style="border: 1px solid black; border-left: none; vertical-align: top; padding: 4px 8px;">
+                :  <br> :  <br> :  <br>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="2" style="border: 1px solid black; text-align: center; vertical-align: top; padding-top: 5px; padding-bottom: 8px;">
+                Kepala  <br><br><br><br><br><br>
+                ______________________________<br>
+                ______________________________</td>
+
+            <td colspan="2" style="border: 1px solid black; text-align: center; vertical-align: top; padding-top: 5px; padding-bottom: 8px;">
+                Kepala  <br><br><br><br><br><br>
+                ______________________________<br>
+                ______________________________</td>
+        </tr>
+        <tr>
+            <td>IV.</td>
+            <td style="border: 1px solid black; border-right: none; vertical-align: top; padding: 4px 8px;">
+                Telah tiba Kembali <br> di <br> Pada tanggal <br>
+            </td>
+            <td style="border: 1px solid black; border-left: none; vertical-align: top; padding: 4px 8px;">
+                 <br> : Tanjung Selor <br> : 
+            </td>
+            <td colspan="2" style="border: 1px solid black; border-right: none; vertical-align: top; padding: 4px 8px;">
+                Telah  diperiksa  bahwa  Perjalanan  Dinas tersebut <br>di atas benar - benat dilakukan  atas  perintah dengan <br>semata - mata untuk  kepentingan  Jabatan dalam <br>waktu  yang  sesingkat - singkatnya.
+            </td>
+
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="2" style="border: 1px solid black; text-align: center; vertical-align: top; padding-top: 5px; padding-bottom: 8px;">
+                Kepala Dinas,<br><br><br><br><br>
+                <strong>Hj. ANDRIANA, SH., M.AP</strong><br> Pembina Utama Muda IV/c<br>
+                NIP. 19730329 199803 2 006
+            <td colspan="2" style="border: 1px solid black; text-align: center; vertical-align: top; padding-top: 5px; padding-bottom: 8px;">
+                
+            </td>
+        </tr>
+        <tr>
+            <td>V.</td>
+            <td  colspan="4" style="border: 1px solid black; border-right: none; vertical-align: top; padding: 4px 8px;">
+                Catatan Lain-lain:
+            </td>
+        </tr>
+        <tr>
+            <td>VI.</td>
+            <td  colspan="4" style="border: 1px solid black; border-right: none; vertical-align: top; padding: 4px 8px;">
+                PERHATIAN: <br>PPK yang menerbitkan SPD, pegawai yang melakukan perjalanan dinas, para pejabat yang mengesahkan tanggal berangkat/tiba, serta bendahara pengeluaran bertanggung jawab berdasarkan peraturan-peraturan Keuangan Negara apabila negara menderita rugi akibat kesalahan, kelalaian, dan kealpaannya.
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+
+<table style="border: none;">
+      <tbody style="border: none;">
+        <tr style="border: none;">
+          <td style="width: 20%; border: none;"></td>
+          <td style="width: 40%; border: none;"></td>
+          <td style="width: 40%; border: none;;" >Kepala Dinas, <br><br><br><br><b>Hj. ANDRIANA, SH., M.AP</b><br>Pembina Utama Muda IV/c
+<br>NIP. 19730329 199803 2 006</td>
+        </tr>
+      </tbody>
+    </table>
+</body>
+</html>

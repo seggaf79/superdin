@@ -1,0 +1,208 @@
+<head>
+<meta charset="UTF-8" />
+  <title>Surat Tugas</title>
+  <style>
+    body {
+      font-family: "Times New Roman", Times, serif;
+      margin: 5px;
+      color: #000;
+    }
+    .page {
+      width: 660px;
+      margin: 0 auto 10px auto;
+      padding: 5px;
+      border: 0px solid #000;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    h1, h2, h3 {
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+    h2 {
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 15px;
+      }
+    .header-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Logo kiri dan kanan di ujung */
+    padding: 10px 20px;
+    border-bottom: 1px solid #000; /* Contoh garis bawah */
+    }
+
+    .header-info .logo-left,
+    .header-info .logo-right {
+        width: 100%; /* Atur ukuran logo sesuai kebutuhan */
+        height: auto;
+    }
+
+    .header-info .header-center {
+    flex-grow: 1;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    /* Bisa ditambah style lain sesuai kebutuhan */
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 5px;
+      font-size: 12px;
+    }
+    table, th, td {
+      border: 1px solid #000;
+    }
+    th, td {
+      padding: 6px 8px;
+      vertical-align: top;
+    }
+    th {
+      text-align: center;
+      font-weight: bold;
+    }
+    .no-border {
+      border: none !important;
+    }
+    .signature-section {
+      margin-top: 30px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .signature-name {
+      font-weight: bold;
+      margin-top: 60px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .nip {
+      text-align: center;
+      font-size: 13px;
+      margin-top: 2px;
+    }
+    .page-break {
+      page-break-after: always;
+    }
+    .section-title {
+      font-weight: bold;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+    .italic {
+      font-style: italic;
+    }
+    .dashed-line {
+      border-bottom: 1px dotted #000;
+      width: 200px;
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HALAMAN 1 -->
+<div class="page" id="page1">
+
+<div>
+    <table style="width: 100%; text-align: center; border-collapse: collapse; border: none; border-bottom: 2px solid #000;">
+    <tr>
+        <td style="width: 20%; border: none;">
+            <img src="images/logobulungan.png" alt="Logo Kabupaten Bulungan" style="max-height: 70px; display: block; margin: 0 auto;">
+        </td>
+        <td style="width: 80%; text-align: center; border: none;">
+            <div style="font-weight: bold; font-size: 16px;">PEMERINTAH KABUPATEN BULUNGAN</div>
+            <div style="font-weight: bold; font-size: 18px;">{{ $setting -> nama_kantor }}</div>
+            <div style="font-weight: bold; font-size: 12px;">{{ $setting -> alamat }}</div>
+            <div style="font-size: 12px; font-style: italic;">Pos-El: {{ $setting -> email }} Laman : {{ $setting -> website }} </div>
+        </td>
+     </tr>
+    </table>
+</div>
+<br>
+
+    <h1 style="text-align: center; font-weight: bold; margin-bottom: 5px; text-decoration: underline;">SURAT TUGAS</h1>
+    <div style="text-align: center; font-weight: normal; margin-bottom: 10px; font-size: 14px;">NOMOR : {{ $sppd -> no_surat }}</div>
+<br>
+<div>
+    <table style="width: 100%; text-align: left; border-collapse: collapse; border: none;">
+    <tr>
+        <td style="width: 10%; border: none;">Dasar</td>
+        <td style="width: 5%; text-align: left; border: none;">:</td>
+        <td style="width: 85%; border: none;">
+	<ol>
+		<li>Peraturan Bupati Bulungan Nomor 2 Tahun 2024 Tentang Pedoman Pelaksanaan Perjalanan Dinas di Lingkungan Pemerintah Daerah;</li>
+		<li>Peraturan Bupati Bulungan Nomor 18 Tahun 2023 Tentang Tata Naskah Dinas di Lingkungan Pemerintah Kabupaten Bulungan.</li>
+	</ol>
+	</td>
+    </tr>
+    </table>
+</div>
+
+<h2 style="text-align: center; font-weight: bold; margin-bottom: 5px;">MEMERINTAHKAN</h2><br>
+
+<div>
+    <table style="width: 100%; text-align: left; border-collapse: collapse; border: none;">
+    <tr>
+        <td style="width: 10%; border: none;">Kepada</td>
+        <td style="width: 5%; text-align: left; border: none;">:</td>
+        <td style="width: 85%; border: none;">
+	
+          <div>
+    <table style="width: 100%; text-align: left; border-collapse: collapse; border: none;">
+    <tr>
+        <td style="width: 30%; border: none;">Nama<br>Pangkat / Golongan<br>NIP/NIP3K<br>Jabatan</td>
+        <td style="width: 5%; text-align: left; border: none;">:<br>:<br>:<br>:</td>
+        <td style="width: 65%; border: none;">
+	          {{ $sppd -> pegawai_id -> nama }}<br>{{ $sppd -> pegawai_id -> jabatan }}<br>{{ $sppd -> pegawai_id -> nip }}<br>{{ $sppd -> pegawai_id -> jabatan_golongan }}
+	      </td>
+    </tr>
+    </table>
+</div>
+
+  </li>
+	</ol>
+	</td>
+    </tr>
+    </table>
+</div>
+
+<div>
+    <table style="width: 100%; text-align: left; border-collapse: collapse; border: none;">
+    <tr>
+        <td style="width: 10%; border: none;">Untuk</td>
+        <td style="width: 5%; text-align: left; border: none;">:</td>
+        <td style="width: 85%; border: none;">
+	<ol>
+		<li>Dalam rangka {{ $sppd -> maksud }} di {{ $sppd -> tujuan }};</li>
+		<li>Perjalanan Dinas {{ $sppd -> lama_hari }} hari PP dari tanggal {{ $sppd -> tgl_berangkat }} hingga tanggal {{ $sppd -> tgl_pulang }} ;</li>
+    <li>Rekening: {{ $sppd -> rekening_id -> kode_rekening }} .</li>
+	</ol>
+	</td>
+    </tr>
+    </table>
+</div>
+
+
+    <table style="border: none;">
+      <tbody style="border: none;">
+        <tr style="border: none;">
+          <td style="width: 20%; border: none;"></td>
+          <td style="width: 40%; border: none;"></td>
+          <td style="width: 40%; border: none;;" >Dikeluarkan di : Tanjung Selor <br>Pada Tanggal : {{ $sppd -> tgl_input }}</td>
+        </tr>
+        <tr style="border: none;">
+          <td style="width: 20%; border: none;"></td>
+          <td style="width: 40%; border: none;"></td>
+          <td style="width: 40%; border: none;;" >{{ $sppd -> pejabat_id -> jabatan }}<br><br><br><br><br><b><u>{{ $sppd -> pejabat_id -> nama }}</u></b><br>NIP. {{ $sppd -> pejabat_id -> nip }}</td>
+        </tr>
+      </tbody>
+    </table> <br> <br> <br>
