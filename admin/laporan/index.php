@@ -55,7 +55,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <?php include '../partials/sidebar.php'; ?>
 <div class="flex flex-col min-h-screen w-full">
 
-<div class="p-4 sm:ml-10">
+<div class="p-4 sm:ml-5">
     <div class="p-4 border-gray-200 border-dashed rounded-lg">
         <h1 class="text-2xl font-bold mb-4">Laporan SPPD</h1>
 
@@ -96,8 +96,8 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <div class="col-span-1 md:col-span-4">
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Filter</button>
-                <a href="export_pdf.php?bulan=<?= $bulan ?>&tahun=<?= $tahun ?>&bidang=<?= $bidang ?>&pegawai=<?= $pegawai ?>" target="_blank" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Export PDF</a>
-                <a href="export_excel.php?bulan=<?= $bulan ?>&tahun=<?= $tahun ?>&bidang=<?= $bidang ?>&pegawai=<?= $pegawai ?>" class="btn btn-success" target="_blank">Export Excel</a>
+                <a href="export_pdf.php?bulan=<?= $filter_bulan ?>&tahun=<?= $filter_tahun ?>&bidang=<?= $filter_bidang ?>&pegawai=<?= $filter_pegawai ?>" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Export PDF</a>
+                <a href="export_excel.php?bulan=<?= $filter_bulan ?>&tahun=<?= $filter_tahun ?>&bidang=<?= $filter_bidang ?>&pegawai=<?= $filter_pegawai ?>" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Export Excel</a>
             </div>
         </form>
 

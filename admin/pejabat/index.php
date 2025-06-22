@@ -54,9 +54,9 @@ $pejabats = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td class="px-4 py-2 border"><?= e($p['jabatan']) ?></td>
                         <td class="px-4 py-2 border"><?= e($p['pangkat_golongan']) ?></td>
                         <td class="px-4 py-2 border space-x-1">
-                            <a href="detail.php?id=<?= $p['id'] ?>" class="text-blue-600 hover:underline">Detail</a>
-                            <a href="edit.php?id=<?= $p['id'] ?>" class="text-green-600 hover:underline">Edit</a>
-                            <a href="delete.php?id=<?= $p['id'] ?>" class="text-red-600 hover:underline" onclick="return confirm('Yakin ingin menghapus?')">Hapus</a>
+                            <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-s-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"><a href="detail.php?id=<?= $p['id'] ?>" class="text-white-600">Detail</a></button>
+                            <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-e-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"><a href=""edit.php?id=<?= $p['id'] ?>" class="text-white-600">Edit</a></button>
+                            <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-e-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"><a href="delete.php?id=<?= $p['id'] ?>" class="text-white-600" onclick="return confirm('Yakin ingin menghapus?')">Hapus</a></button>
                         </td>
                     </tr>
                 <?php endforeach; ?>

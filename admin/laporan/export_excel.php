@@ -7,8 +7,13 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 
 // Ambil parameter filter
-$bulan = isset($_GET['bulan']) ? (int) $_GET['bulan'] : date('m');
-$tahun = isset($_GET['tahun']) ? (int) $_GET['tahun'] : date('Y');
+$bulan = ($_GET['bulan'] ?? '') !== '' ? (int)$_GET['bulan'] : (int)date('n');
+$tahun = ($_GET['tahun'] ?? '') !== '' ? (int)$_GET['tahun'] : (int)date('Y');
+
+// Pastikan bulan berada dalam rentang 1–12
+if ($bulan < 1 || $bulan > 12) {
+    $bulan = (int)date('n');
+}
 
 // Ambil setting nama kantor
 $stmtSetting = $conn->query("SELECT * FROM setting LIMIT 1");

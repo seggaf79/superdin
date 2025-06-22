@@ -6,8 +6,13 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 
 // Ambil filter dari URL
-$bulan = isset($_GET['bulan']) ? (int) $_GET['bulan'] : date('m');
-$tahun = isset($_GET['tahun']) ? (int) $_GET['tahun'] : date('Y');
+$bulan = ($_GET['bulan'] ?? '') !== '' ? (int)$_GET['bulan'] : (int)date('n');
+$tahun = ($_GET['tahun'] ?? '') !== '' ? (int)$_GET['tahun'] : (int)date('Y');
+
+// Pastikan bulan berada dalam rentang 1–12
+if ($bulan < 1 || $bulan > 12) {
+    $bulan = (int)date('n');
+}
 
 // Ambil data setting kantor
 $stmtSetting = $conn->query("SELECT * FROM setting LIMIT 1");
@@ -44,7 +49,7 @@ $html = '
 <style>
 body { font-family: sans-serif; font-size: 12px; }
 .clearfix::after { content: ""; display: table; clear: both; }
-.kop img { float: left; width: 100px; }
+.kop img { float: left; width: 500px; }
 .header { text-align: center; margin-bottom: 20px; }
 .table { width: 100%; border-collapse: collapse; margin-top: 20px; }
 .table th, .table td {

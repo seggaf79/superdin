@@ -53,9 +53,12 @@ $pegawais = $stmt->fetchAll();
                         <td class="px-4 py-2"><?= htmlspecialchars($p['jabatan']) ?></td>
                         <td class="px-4 py-2"><?= htmlspecialchars($p['pangkat_golongan']) ?></td>
                         <td class="px-4 py-2 text-center space-x-1">
-                            <button type="button" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 "><a href="detail.php?id=<?= $p['id'] ?>" class="text-white-600">Detail</a></button>
-                            <button type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"><a href="edit.php?id=<?= $p['id'] ?>" class="text-white-600">Edit</a></button>
-                            <button type="button" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"><a href="delete.php?id=<?= $p['id'] ?>" class="text-white-600" onclick="return confirm('Yakin ingin menghapus?')">Hapus</a></button>
+                            <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-s-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
+    <a href="detail.php?id=<?= $p['id'] ?>" class="text-white-600">Detail</a></button>
+  <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-s-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"">
+    <a href="edit.php?id=<?= $p['id'] ?>" class="text-white-600">Edit</a></button>
+  <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-e-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
+    <a href="delete.php?id=<?= $p['id'] ?>" class="text-white-600" onclick="return confirm('Yakin ingin menghapus?')">Hapus</a></button>
                         </td>
                     </tr>
                 <?php endforeach ?>

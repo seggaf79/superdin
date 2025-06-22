@@ -12,20 +12,20 @@ $totalData = $totalQuery->fetchColumn();
 $totalPages = ceil($totalData / $limit);
 
 // Ambil data dengan paginasi
-$stmt = $pdo->prepare("SELECT * FROM sppd ORDER BY tgl_input DESC LIMIT :limit OFFSET :offset");
+// Ambil data dengan paginasi dan join pegawai
+$stmt = $pdo->prepare(
+    "SELECT s.id, s.no_surat, s.tujuan, s.tgl_input, s.tgl_berangkat,
+            p.nama AS nama_pegawai
+     FROM sppd s
+     JOIN pegawai p ON s.pegawai_id = p.id
+     ORDER BY s.tgl_input DESC
+     LIMIT :limit OFFSET :offset"
+);
+
 $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmt->execute();
-$sppdList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$stmt = $pdo->prepare("
-    SELECT s.id, s.no_surat, s.tujuan, s.tgl_input, s.tgl_berangkat, 
-           p.nama AS nama_pegawai
-    FROM sppd s
-    JOIN pegawai p ON s.pegawai_id = p.id
-    ORDER BY s.tgl_input DESC
-");
-$stmt->execute();
 $sppds = $stmt->fetchAll();
 
 $total_pegawai = $pdo->query("SELECT COUNT(*) FROM pegawai")->fetchColumn();
@@ -87,9 +87,6 @@ $total_sppd = $pdo->query("SELECT COUNT(*) FROM sppd")->fetchColumn();
                   <br>
                   <button type="button" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"><a href="export_pdf_sppd.php?id=<?= $row['id'] ?>" class="block text-white-600">PDF SPPD</a></button>
                   <button type="button" class="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 shadow-lg shadow-pink-500/50 dark:shadow-lg dark:shadow-pink-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"><a href="export_pdf_surat_tugas.php?id=<?= $row['id'] ?>" class="block text-white-600 hover:underline">PDF Surat Tugas</a></button>
-                  <br>
-                  <button type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"><a href="print_sppd.php?id=<?= $row['id'] ?>" class="block text-white-600">Print SPPD</a></button>
-                  <button type="button" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 "><a href="print_surat_tugas.php?id=<?= $row['id'] ?>" class="block text-white-700">Print Surat Tugas</a></button>
                   </td>
               </tr>
             <?php endforeach; ?>
