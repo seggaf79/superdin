@@ -40,6 +40,8 @@ $pegawais = $stmt->fetchAll();
                     <th class="px-4 py-3">NIP</th>
                     <th class="px-4 py-3">Jabatan</th>
                     <th class="px-4 py-3">Pangkat/Golongan</th>
+                    <th class="px-4 py-3">Jenis Kelamin</th>
+                    <th class="px-4 py-3">Status ASN</th>
                     <th class="px-4 py-3 text-center">Aksi</th>
                 </tr>
             </thead>
@@ -52,6 +54,8 @@ $pegawais = $stmt->fetchAll();
                         <td class="px-4 py-2"><?= htmlspecialchars($p['nip']) ?></td>
                         <td class="px-4 py-2"><?= htmlspecialchars($p['jabatan']) ?></td>
                         <td class="px-4 py-2"><?= htmlspecialchars($p['pangkat_golongan']) ?></td>
+                        <td class="px-4 py-2"><?= htmlspecialchars($p['jenis_kelamin']) ?></td>
+                        <td class="px-4 py-2"><?= htmlspecialchars($p['status_asn']) ?></td>
                         <td class="px-4 py-2 text-center space-x-1">
                             <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-s-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
     <a href="detail.php?id=<?= $p['id'] ?>" class="text-white-600">Detail</a></button>

@@ -42,7 +42,7 @@ $total_sppd = $pdo->query("SELECT COUNT(*) FROM sppd")->fetchColumn();
 
       <!-- Tile Statistik -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div class="bg-blue-600 text-white p-6 rounded-lg shadow text-center">
+        <div class="bg-yellow-600 text-white p-6 rounded-lg shadow text-center">
           <div class="text-sm">Jumlah Pegawai</div>
           <div class="text-3xl font-bold"><?= $total_pegawai ?></div>
         </div>

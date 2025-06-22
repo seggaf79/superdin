@@ -31,6 +31,7 @@ if (is_post()) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login | E-SPPD OPD Bulungan</title>
   <link href="../assets/css/tailwind.min.css" rel="stylesheet">
+  <link rel="shortcut icon" href="https://simotivasi.bulungan.go.id/assets/skin/blgn_simotivasi2025/favicon.ico">
 </head>
 <body class="min-h-screen bg-gray-100 flex">
 
@@ -44,7 +45,7 @@ if (is_post()) {
 
     <img src="../assets/images/logobulungan.png" alt="Logo Bulungan" class="w-16 h-16 mb-4">
 
-    <h1 class="text-2xl font-bold text-gray-900 mb-6">Aplikasi SPPD OPD Pemkab. Bulungan</h1>
+    <h1 class="text-2xl font-bold text-gray-900 mb-6">Aplikasi E-SPPD OPD Pemkab. Bulungan</h1>
 
     <?php if (!empty($errors)): ?>
       <div class="bg-red-100 text-red-700 p-3 rounded w-full max-w-sm mb-4">

@@ -24,6 +24,14 @@ $jumlah_pegawai = $pdo->query("SELECT COUNT(*) FROM pegawai")->fetchColumn();
 $jumlah_sppd = $pdo->query("SELECT COUNT(*) FROM sppd")->fetchColumn();
 $jumlah_user = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
 
+// Query jumlah pegawai berdasarkan jenis kelamin
+$queryGender = $pdo->query("SELECT jenis_kelamin, COUNT(*) AS jumlah FROM pegawai GROUP BY jenis_kelamin");
+$genderData = ['Laki-laki' => 0, 'Perempuan' => 0];
+
+while ($row = $queryGender->fetch(PDO::FETCH_ASSOC)) {
+    $genderData[$row['jenis_kelamin']] = (int)$row['jumlah'];
+}
+
 // Data grafik SPPD per bulan
 $bulanData = $pdo->query("
     SELECT MONTH(tgl_input) as bulan, COUNT(*) as jumlah 
@@ -47,7 +55,7 @@ for ($i = 1; $i <= 12; $i++) {
 
             <!-- Tile Statistik -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="bg-blue-600 text-white p-5 rounded-xl shadow flex flex-col items-center justify-center">
+                <div class="bg-indigo-400 text-white p-5 rounded-xl shadow flex flex-col items-center justify-center">
                     <div class="text-sm">Jumlah Pegawai</div>
                     <div class="text-3xl font-bold"><?= $jumlah_pegawai ?></div>
                 </div>
@@ -90,16 +98,19 @@ for ($i = 1; $i <= 12; $i++) {
 </div>
 
             <!-- Grafik -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="bg-white p-4 rounded-xl shadow">
-                    <h2 class="text-lg font-semibold mb-4 text-gray-800">Grafik SPPD per Bulan</h2>
-                    <canvas id="sppdChart" class="w-full h-64"></canvas>
-                </div>
-                <div class="bg-white p-4 rounded-xl shadow">
-                    <h2 class="text-lg font-semibold mb-4 text-gray-800">Jumlah Pegawai</h2>
-                    <canvas id="grafikPegawai" class="w-full h-64"></canvas>
-                </div>
-            </div>
+            <div class="grid grid-cols-4 gap-6">
+    <!-- SPPD Chart (75%) -->
+    <div class="col-span-3 bg-white p-4 rounded-xl shadow">
+        <h2 class="text-lg font-semibold mb-4 text-gray-800">Grafik SPPD per Bulan</h2>
+        <canvas id="sppdChart" class="w-full h-64"></canvas>
+    </div>
+
+    <!-- Pegawai Chart (25%) -->
+    <div class="col-span-1 bg-white p-4 rounded-xl shadow">
+        <h2 class="text-lg font-semibold mb-4 text-gray-800">Jumlah Pegawai</h2>
+        <canvas id="genderChart" class="w-full h-64"></canvas>
+    </div>
+</div>
         </main>
 
         <?php include '../partials/footer.php'; ?>
@@ -125,41 +136,35 @@ const sppdChart = new Chart(document.getElementById('sppdChart'), {
     }
 });
 
-  const ctx = document.getElementById('grafikPegawai').getContext('2d');
-
-  const data = {
-    labels: ['Laki-laki', 'Perempuan'],
-    datasets: [{
-      label: 'Jumlah Pegawai',
-      data: [19, 7],
-      backgroundColor: ['#4e73df', '#f6c23e'],
-      borderWidth: 1
-    }]
-  };
-
-  const config = {
-    type: 'pie',
-    data: data,
+const genderCtx = document.getElementById('genderChart').getContext('2d');
+const genderChart = new Chart(genderCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Laki-laki', 'Perempuan'],
+        datasets: [{
+            label: 'Jumlah Pegawai',
+            data: [
+                <?= $genderData['Laki-laki'] ?>,
+                <?= $genderData['Perempuan'] ?>
+            ],
+            backgroundColor: [
+                'rgba(54, 162, 235, 0.7)', // biru
+                'rgba(255, 99, 132, 0.7)'  // merah muda
+            ],
+            borderColor: [
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 99, 132, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
     options: {
-      responsive: true,
-      plugins: {
-        title: {
-          display: true,
-          text: 'Grafik Jumlah Pegawai DKIP Bulungan'
-        },
-        tooltip: {
-          callbacks: {
-            label: function(context) {
-              const total = context.dataset.data.reduce((a, b) => a + b, 0);
-              const value = context.raw;
-              const percent = ((value / total) * 100).toFixed(1);
-              return `${context.label}: ${value} orang (${percent}%)`;
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom'
             }
-          }
         }
-      }
     }
-  };
-
-  new Chart(ctx, config);
+});
 </script>

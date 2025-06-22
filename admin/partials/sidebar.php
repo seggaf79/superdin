@@ -29,7 +29,8 @@
             <p class="uppercase text-xs text-gray-300 mb-2">Auth</p>
             <a href="../logout.php" class="block p-2 rounded hover:bg-white hover:text-blue-700 transition-all">Keluar</a>
         </div>
-
+    
+        <img src="../../assets/images/logodkipwhite.png" alt="Logo DKIP Bulungan" class="fixed bottom-5 left-5 h-14 ml-7 mr-5 mb-3">
     </nav>
 
 </aside>

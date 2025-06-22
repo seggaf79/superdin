@@ -32,6 +32,8 @@ if (!$pegawai) {
         <div><strong>NIP:</strong><br> <?= e($pegawai['nip']) ?></div>
         <div><strong>Jabatan:</strong><br> <?= e($pegawai['jabatan']) ?></div>
         <div><strong>Pangkat Golongan:</strong><br> <?= e($pegawai['pangkat_golongan']) ?></div>
+        <div><strong>Jenis Kelamin:</strong><br><?= e($pegawai['jenis_kelamin']) ?></div>
+        <div><strong>Status ASN:</strong><br><?= e($pegawai['status_asn']) ?></div>
     </div>
 
     <div class="mt-4">
