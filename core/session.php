@@ -19,7 +19,7 @@ function get_user_login() {
 // Paksa redirect jika belum login
 function require_login() {
     if (!is_user_logged_in()) {
-        header('Location: login.php');
+        header('Location: /admin/login.php');
         exit;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 require_once '../../vendor/autoload.php';
-require_once '../../config/db.php';
+require_once '../../config/init.php';
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -57,15 +57,19 @@ $replacements = [
     '{{ $sppd -> transportasi }}' => $data['transportasi'],
     '{{ $sppd -> tujuan }}' => $data['tujuan'],
     '{{ $sppd -> lama_hari }}' => $data['lama_hari'],
-    '{{ $sppd -> tgl_berangkat }}' => date('d-m-Y', strtotime($data['tgl_berangkat'])),
-    '{{ $sppd->tgl_berangkat }}' => date('d-m-Y', strtotime($data['tgl_berangkat'])),
-    '{{ $sppd -> tgl_pulang }}' => date('d-m-Y', strtotime($data['tgl_pulang'])),
-    '{{ $sppd->tgl_pulang }}' => date('d-m-Y', strtotime($data['tgl_pulang'])),
-    '{{ $sppd -> tgl_input }}' => date('d-m-Y', strtotime($data['tgl_input'])),
+    '{{ $sppd -> tgl_berangkat }}' => formatTanggalIndo($data['tgl_berangkat']),
+    '{{ $sppd->tgl_berangkat }}' => formatTanggalIndo($data['tgl_berangkat']),
+    '{{ $sppd -> tgl_pulang }}' => formatTanggalIndo($data['tgl_pulang']),
+    '{{ $sppd->tgl_pulang }}' => formatTanggalIndo($data['tgl_pulang']),
+    '{{ $sppd -> tgl_input }}' => formatTanggalIndo($data['tgl_input']),
     '{{ $rekening_id -> kode_rekening }}' => $data['kode_rekening']
 ];
 
 $html = strtr($template, $replacements);
+
+$nama_pegawai = str_replace(' ', '_', $data['pegawai_nama']);
+$tanggal_dibuat = date('dmY', strtotime($data['tgl_input']));
+$nama_file = "SPPD_{$nama_pegawai}_{$tanggal_dibuat}.pdf";
 
 // Load PDF
 $options = new Options();
@@ -74,4 +78,4 @@ $dompdf = new Dompdf($options);
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
-$dompdf->stream('sppd_export_dkip.pdf', ['Attachment' => false]);
+$dompdf->stream($nama_file, array("Attachment" => true));

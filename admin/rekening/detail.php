@@ -12,7 +12,7 @@ $rekening = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Jika data tidak ditemukan
 if (!$rekening) {
-    setFlash('error', 'Data rekening tidak ditemukan.');
+    set_Flash('error', 'Data rekening tidak ditemukan.');
     redirect('index.php');
 }
 ?>

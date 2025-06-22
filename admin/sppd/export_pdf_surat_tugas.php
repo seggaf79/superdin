@@ -2,7 +2,7 @@
 require '../../vendor/autoload.php';
 use Dompdf\Dompdf;
 
-require '../../config/db.php';
+require '../../config/init.php';
 
 // Ambil ID SPPD
 $id = $_GET['id'] ?? null;
@@ -41,9 +41,9 @@ $replacements = [
     '{{ $sppd -> maksud }}' => $sppd['maksud'],
     '{{ $sppd -> tujuan }}' => $sppd['tujuan'],
     '{{ $sppd -> lama_hari }}' => $sppd['lama_hari'],
-    '{{ $sppd -> tgl_berangkat }}' => date('d-m-Y', strtotime($sppd['tgl_berangkat'])),
-    '{{ $sppd -> tgl_pulang }}' => date('d-m-Y', strtotime($sppd['tgl_pulang'])),
-    '{{ $sppd -> tgl_input }}' => date('d-m-Y', strtotime($sppd['tgl_input'])),
+    '{{ $sppd -> tgl_berangkat }}' => formatTanggalIndo($sppd['tgl_berangkat']),
+    '{{ $sppd -> tgl_pulang }}' => formatTanggalIndo($sppd['tgl_pulang']),
+    '{{ $sppd -> tgl_input }}' => formatTanggalIndo($sppd['tgl_input']),
     '{{ $sppd -> pegawai_id -> nama }}' => $sppd['pegawai_nama'],
     '{{ $sppd -> pegawai_id -> jabatan }}' => $sppd['pegawai_jabatan'],
     '{{ $sppd -> pegawai_id -> nip }}' => $sppd['pegawai_nip'],
@@ -61,6 +61,10 @@ $replacements = [
 // Ganti semua placeholder
 $html = strtr($template, $replacements);
 
+$nama_pegawai = str_replace(' ', '_', $sppd['pegawai_nama']);
+$tanggal_dibuat = date('dmY', strtotime($sppd['tgl_input']));
+$nama_file = "ST_{$nama_pegawai}_{$tanggal_dibuat}.pdf";
+
 // Konversi src logo ke base64 agar muncul di PDF
 $logoPath = '../../assets/images/logobulungan.png';
 $logoData = base64_encode(file_get_contents($logoPath));
@@ -75,5 +79,5 @@ $dompdf = new Dompdf();
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
-$dompdf->stream("Surat_Tugas_DKIP.pdf", ['Attachment' => false]);
+$dompdf->stream($nama_file, array("Attachment" => true));
 exit;

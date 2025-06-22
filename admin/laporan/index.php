@@ -1,39 +1,53 @@
 <?php
 require_once '../../config/init.php';
-require_login();
 
-$tahun = isset($_GET['tahun']) ? $_GET['tahun'] : date('Y');
-$bulan = isset($_GET['bulan']) ? $_GET['bulan'] : '';
-$bidang = isset($_GET['bidang']) ? $_GET['bidang'] : '';
+// Ambil data filter
+$filter_bidang = $_GET['bidang'] ?? '';
+$filter_bulan = $_GET['bulan'] ?? '';
+$filter_tahun = $_GET['tahun'] ?? '';
+$filter_pegawai = $_GET['pegawai'] ?? '';
 
-// Ambil daftar tahun unik
-$tahunList = $pdo->query("SELECT DISTINCT YEAR(tgl_input) AS tahun FROM sppd ORDER BY tahun DESC")->fetchAll(PDO::FETCH_COLUMN);
+// Ambil daftar pegawai
+$pegawai_stmt = $conn->query("SELECT id, nama FROM pegawai ORDER BY nama ASC");
+$daftar_pegawai = $pegawai_stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Ambil daftar bidang
-$bidangList = $pdo->query("SELECT DISTINCT bidang FROM rekening ORDER BY bidang ASC")->fetchAll(PDO::FETCH_COLUMN);
+$bidang_stmt = $conn->query("SELECT DISTINCT bidang FROM rekening ORDER BY bidang ASC");
+$daftar_bidang = $bidang_stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Query data utama
-$sql = "SELECT sppd.*, pegawai.nama, rekening.bidang 
-        FROM sppd 
-        LEFT JOIN pegawai ON sppd.pegawai_id = pegawai.id
-        LEFT JOIN rekening ON sppd.rekening_id = rekening.id
-        WHERE YEAR(sppd.tgl_input) = :tahun";
+// Query data SPPD dengan filter
+$where = [];
+$params = [];
 
-$params = [':tahun' => $tahun];
-
-if (!empty($bulan)) {
-    $sql .= " AND MONTH(sppd.tgl_input) = :bulan";
-    $params[':bulan'] = $bulan;
+if ($filter_bidang) {
+    $where[] = "rekening.bidang = :bidang";
+    $params[':bidang'] = $filter_bidang;
 }
-if (!empty($bidang)) {
-    $sql .= " AND rekening.bidang = :bidang";
-    $params[':bidang'] = $bidang;
+if ($filter_bulan) {
+    $where[] = "MONTH(sppd.tgl_berangkat) = :bulan";
+    $params[':bulan'] = $filter_bulan;
+}
+if ($filter_tahun) {
+    $where[] = "YEAR(sppd.tgl_berangkat) = :tahun";
+    $params[':tahun'] = $filter_tahun;
+}
+if ($filter_pegawai) {
+    $where[] = "pegawai.id = :pegawai";
+    $params[':pegawai'] = $filter_pegawai;
 }
 
-$sql .= " ORDER BY sppd.tgl_input DESC";
-$stmt = $pdo->prepare($sql);
+$whereSQL = $where ? 'WHERE ' . implode(' AND ', $where) : '';
+
+$sql = "SELECT sppd.*, pegawai.nama AS nama_pegawai, rekening.bidang 
+        FROM sppd
+        JOIN pegawai ON sppd.pegawai_id = pegawai.id
+        JOIN rekening ON sppd.rekening_id = rekening.id
+        $whereSQL
+        ORDER BY sppd.tgl_input DESC";
+
+$stmt = $conn->prepare($sql);
 $stmt->execute($params);
-$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <?php include '../partials/header.php'; ?>
@@ -41,74 +55,83 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <?php include '../partials/sidebar.php'; ?>
 <div class="flex flex-col min-h-screen w-full">
 
-<div class="p-4">
-    <h1 class="text-2xl font-bold mb-4">Laporan SPPD</h1>
+<div class="p-4 sm:ml-10">
+    <div class="p-4 border-gray-200 border-dashed rounded-lg">
+        <h1 class="text-2xl font-bold mb-4">Laporan SPPD</h1>
 
-    <form method="GET" class="flex flex-wrap gap-4 mb-4 items-end">
-        <div>
-            <label class="block text-sm">Tahun</label>
-            <select name="tahun" class="border px-2 py-1 rounded">
-                <?php foreach ($tahunList as $t): ?>
-                    <option value="<?= $t ?>" <?= $t == $tahun ? 'selected' : '' ?>><?= $t ?></option>
+        <form method="get" class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+            <select name="bidang" class="p-2 border rounded">
+                <option value="">Semua Bidang</option>
+                <?php foreach ($daftar_bidang as $b): ?>
+                    <option value="<?= $b['bidang'] ?>" <?= ($filter_bidang == $b['bidang']) ? 'selected' : '' ?>>
+                        <?= $b['bidang'] ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
-        </div>
 
-        <div>
-            <label class="block text-sm">Bulan</label>
-            <select name="bulan" class="border px-2 py-1 rounded">
-                <option value="">Semua</option>
+            <select name="bulan" class="p-2 border rounded">
+                <option value="">Semua Bulan</option>
                 <?php for ($i = 1; $i <= 12; $i++): ?>
-                    <option value="<?= $i ?>" <?= $i == $bulan ? 'selected' : '' ?>>
-                        <?= date('F', mktime(0, 0, 0, $i, 1)) ?>
+                    <option value="<?= $i ?>" <?= ($filter_bulan == $i) ? 'selected' : '' ?>>
+                        <?= date('F', mktime(0, 0, 0, $i, 10)) ?>
                     </option>
                 <?php endfor; ?>
             </select>
-        </div>
 
-        <div>
-            <label class="block text-sm">Bidang</label>
-            <select name="bidang" class="border px-2 py-1 rounded">
-                <option value="">Semua</option>
-                <?php foreach ($bidangList as $b): ?>
-                    <option value="<?= e($b) ?>" <?= $b == $bidang ? 'selected' : '' ?>><?= e($b) ?></option>
+            <select name="tahun" class="p-2 border rounded">
+                <option value="">Semua Tahun</option>
+                <?php for ($y = date('Y'); $y >= 2020; $y--): ?>
+                    <option value="<?= $y ?>" <?= ($filter_tahun == $y) ? 'selected' : '' ?>><?= $y ?></option>
+                <?php endfor; ?>
+            </select>
+
+            <select name="pegawai" class="p-2 border rounded">
+                <option value="">Semua Pegawai</option>
+                <?php foreach ($daftar_pegawai as $p): ?>
+                    <option value="<?= $p['id'] ?>" <?= ($filter_pegawai == $p['id']) ? 'selected' : '' ?>>
+                        <?= $p['nama'] ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
-        </div>
 
-        <div class="flex gap-2 mt-6">
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Filter</button>
-            <a href="export_pdf.php?tahun=<?= $tahun ?>&bulan=<?= $bulan ?>&bidang=<?= $bidang ?>" class="bg-purple-600 text-white px-4 py-2 rounded">Export PDF</a>
-            <a href="export_excel.php?tahun=<?= $tahun ?>&bulan=<?= $bulan ?>&bidang=<?= $bidang ?>" class="bg-green-600 text-white px-4 py-2 rounded">Export Excel</a>
-            <a href="print.php?tahun=<?= $tahun ?>&bulan=<?= $bulan ?>&bidang=<?= $bidang ?>" target="_blank" class="bg-gray-700 text-white px-4 py-2 rounded">Print</a>
-        </div>
-    </form>
+            <div class="col-span-1 md:col-span-4">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Filter</button>
+                <a href="export_pdf.php?bulan=<?= $bulan ?>&tahun=<?= $tahun ?>&bidang=<?= $bidang ?>&pegawai=<?= $pegawai ?>" target="_blank" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Export PDF</a>
+                <a href="export_excel.php?bulan=<?= $bulan ?>&tahun=<?= $tahun ?>&bidang=<?= $bidang ?>&pegawai=<?= $pegawai ?>" class="btn btn-success" target="_blank">Export Excel</a>
+            </div>
+        </form>
 
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left rtl:text-right text-blue-100 dark:text-blue-100">
-            <thead class="text-xs text-white uppercase bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 dark:text-white">
-                <tr>
-                    <th class="px-4 py-2 border">No</th>
-                    <th class="px-4 py-2 border">Bidang</th>
-                    <th class="px-4 py-2 border">Nama</th>
-                    <th class="px-4 py-2 border">Tujuan</th>
-                    <th class="px-4 py-2 border">Tanggal Pergi</th>
-                    <th class="px-4 py-2 border">Tanggal Dibuat</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white dark:bg-gray-800 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:bg-gray-50">
-                <?php $no = 1; foreach ($results as $row): ?>
-                <tr>
-                    <td class="px-4 py-2 border"><?= $no++ ?></td>
-                    <td class="px-4 py-2 border"><?= e($row['bidang']) ?></td>
-                    <td class="px-4 py-2 border"><?= e($row['nama']) ?></td>
-                    <td class="px-4 py-2 border"><?= e($row['tujuan']) ?></td>
-                    <td class="px-4 py-2 border"><?= e($row['tgl_berangkat']) ?></td>
-                    <td class="px-4 py-2 border"><?= e($row['tgl_input']) ?></td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+        <div class="overflow-auto">
+            <table class="min-w-full bg-white border rounded-lg shadow">
+                <thead>
+                    <tr class="bg-gray-100 text-left">
+                        <th class="px-4 py-2">No</th>
+                        <th class="px-4 py-2">Bidang</th>
+                        <th class="px-4 py-2">Nama</th>
+                        <th class="px-4 py-2">Tujuan</th>
+                        <th class="px-4 py-2">Tanggal Pergi</th>
+                        <th class="px-4 py-2">Tanggal Dibuat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($data as $i => $row): ?>
+                        <tr class="border-t">
+                            <td class="px-4 py-2"><?= $i + 1 ?></td>
+                            <td class="px-4 py-2"><?= $row['bidang'] ?></td>
+                            <td class="px-4 py-2"><?= $row['nama_pegawai'] ?></td>
+                            <td class="px-4 py-2"><?= $row['tujuan'] ?></td>
+                            <td class="px-4 py-2"><?= date('d/m/Y', strtotime($row['tgl_berangkat'])) ?></td>
+                            <td class="px-4 py-2"><?= date('d/m/Y', strtotime($row['tgl_input'])) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    <?php if (count($data) === 0): ?>
+                        <tr>
+                            <td colspan="6" class="text-center text-gray-500 py-4">Data tidak ditemukan</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

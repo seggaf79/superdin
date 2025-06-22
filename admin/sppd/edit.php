@@ -40,8 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $update = $pdo->prepare("UPDATE sppd SET 
         no_surat = ?, pegawai_id = ?, maksud = ?, transportasi = ?, 
         tujuan = ?, tgl_berangkat = ?, tgl_pulang = ?, 
-        rekening_id = ?, pejabat_id = ?, lama_hari= ?
-        WHERE id = ?");
+        rekening_id = ?, pejabat_id = ?, lama_hari= ? WHERE id = ?");
     $update->execute([
         $no_surat, $pegawai_id, $maksud, $transportasi,
         $tujuan, $tgl_berangkat, $tgl_pulang,
