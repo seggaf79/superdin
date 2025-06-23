@@ -35,16 +35,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tgl_pulang = $_POST['tgl_pulang'];
     $rekening_id = $_POST['rekening_id'];
     $pejabat_id = $_POST['pejabat_id'];
-    $lama_hari = $_POST['lama_hari'];
-
+   
     $update = $pdo->prepare("UPDATE sppd SET 
         no_surat = ?, pegawai_id = ?, maksud = ?, transportasi = ?, 
         tujuan = ?, tgl_berangkat = ?, tgl_pulang = ?, 
-        rekening_id = ?, pejabat_id = ?, lama_hari= ? WHERE id = ?");
+        rekening_id = ?, pejabat_id = ? WHERE id = ?");
     $update->execute([
         $no_surat, $pegawai_id, $maksud, $transportasi,
         $tujuan, $tgl_berangkat, $tgl_pulang,
-        $rekening_id, $pejabat_id, $lama_hari, $id
+        $rekening_id, $pejabat_id, $id
     ]);
 
     set_flash("Data berhasil diperbarui.");
@@ -134,12 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
             </div>
 
-            <div>
-                <label>Lama Hari</label>
-                <input type="text" name="lama_hari" value="<?= $sppd['lama_hari'] ?>" class="w-full border rounded p-2" required>
-            </div>
-
-            <div class="md:col-span-2 text-right">
+                        <div class="md:col-span-2 text-right">
                 <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
                     Simpan Perubahan
                 </button>
